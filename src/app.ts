@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
-import { Button, Toast } from '@nutui/nutui-taro';
+import { Button, Toast, Swiper, SwiperItem } from '@nutui/nutui-taro';
 
 import './app.less'
+import './assets/style/flex.less'
+import './assets/style/global.less'
 
 const App = createApp({
   onShow (options) {},
@@ -9,5 +11,6 @@ const App = createApp({
 })
 
 App.use(Button).use(Toast)
+App.use(Swiper).use(SwiperItem);
 
 export default App

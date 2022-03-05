@@ -1,3 +1,5 @@
+const path = require('path');
+
 const config = {
   projectName: 'weapp-travel',
   date: '2022-3-5',
@@ -7,6 +9,9 @@ const config = {
     750: 1,
     828: 1.81 / 2,
     375: 2 / 1
+  },
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src'),
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
