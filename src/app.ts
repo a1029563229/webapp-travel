@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { Button, Toast, Swiper, SwiperItem } from '@nutui/nutui-taro';
 
 import './app.less'
-import './assets/style/flex.less'
+import './assets/style/preset.less'
 import './assets/style/global.less'
 
 const App = createApp({
