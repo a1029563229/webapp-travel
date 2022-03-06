@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { getMap } from "@/utils/map";
+import { ApiGetShopList } from "@/apis";
 
-defineProps<{
-  list: any[]
-}>()
+const shopList = ref();
+
+const getShopList = async () => {
+  const data = await ApiGetShopList();
+  shopList.value = data.list;
+}
+getShopList();
 
 const typeList = ref([
   "吃",
@@ -11,12 +17,13 @@ const typeList = ref([
   "玩",
   "乐"
 ])
+const map = getMap("shop");
 
 </script>
 
 <template>
 <view class="shop-list flex-left">
-  <view class="shop-item" v-for="item in list">
+  <view class="shop-item" v-for="item in shopList">
     <view class="shop-poster-wrapper">
       <image class="shop-poster" :src="item.poster"></image>
     </view>
@@ -30,15 +37,17 @@ const typeList = ref([
         <view class="tag-item" v-for="tag in item.tags.slice(0, 2)">{{tag}}</view>
       </view>
       <view class="shop-footer">
-        <view>评分：{{item.score}}</view>
+        <view>人均：{{item.average_cost ? '￥' + item.average_cost : '-'}}</view>
+        <view>评分：{{item.score || '-'}}</view>
         <view class="distance-wrapper">
-          <view>距离：{{item.distance}}</view>
-          <view class="go-btn">Go</view>
+          <view>距离：{{item.distance || '-'}}</view>
+          <view class="go-btn" @click="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
         </view>
       </view>
     </view>
   </view>
 </view>
+<map id="shop" scale={10} style="display: none;"></map>
 </template>
 
 <style lang="less">
