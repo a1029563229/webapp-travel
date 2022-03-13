@@ -13,20 +13,28 @@ banners.value = [
 
 <template>
   <view class="home-container container">
-    <nut-swiper class="swiper-wrapper" :width="365" :height="150" :pagination-visible="true" pagination-color="#426543" auto-play="3000">
+    <image class="home-image" src="http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/common3/Xnip2022-03-13_11-58-14.jpg"></image>
+    <!-- <nut-swiper class="swiper-wrapper" :width="365" :height="150" :pagination-visible="true" pagination-color="#426543" auto-play="3000">
       <nut-swiper-item class="swiper-item" v-for="item in banners">
         <img class="image" :src="item" alt="" />
       </nut-swiper-item>
-    </nut-swiper>
+    </nut-swiper> -->
     <view>
       <view class="sub-title">吃喝玩乐</view>
-      <shop-list :list="shopList"></shop-list>
+        <suspense>
+          <template #default>
+            <shop-list />
+          </template>
+        </suspense>
     </view>
   </view>
 </template>
 
 <style lang="less">
 .home-container {
+  .home-image {
+    width: 100vw;
+  }
   .swiper-wrapper {
     margin: 5px;
     border-radius: 5px;

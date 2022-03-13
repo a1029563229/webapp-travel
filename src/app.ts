@@ -1,5 +1,22 @@
 import { createApp } from 'vue'
-import { Button, Toast, Swiper, SwiperItem } from '@nutui/nutui-taro';
+import { 
+  Button, 
+  Toast, 
+  Swiper, 
+  SwiperItem, 
+  Input, 
+  Icon, 
+  Picker, 
+  Popup, 
+  Cell,
+  Uploader,
+  Progress,
+  Rate,
+  TextArea,
+  Radio,
+  RadioGroup
+} from '@nutui/nutui-taro';
+import "@nutui/nutui-taro/dist/style.css";
 
 import './app.less'
 import './assets/style/preset.less'
@@ -12,5 +29,16 @@ const App = createApp({
 
 App.use(Button).use(Toast)
 App.use(Swiper).use(SwiperItem);
+App.use(Input);
+App.use(Icon);
+App.use(Picker);
+App.use(Popup);
+App.use(Cell);
+App.use(Uploader);
+App.use(Progress);
+App.use(Rate);
+App.use(TextArea);
+App.use(Radio);
+App.use(RadioGroup);
 
 export default App

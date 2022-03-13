@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getMap } from "@/utils/map";
+import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
 
-const shopList = ref();
+// 用户定位
+const map = getMap("shop");
+const location = await map.getLocation();
+const userLocation = ref<Location>({ longitude: location.longitude, latitude: location.latitude });
 
+// 店铺列表
+const shopList = ref();
 const getShopList = async () => {
-  const data = await ApiGetShopList();
+  const data = await ApiGetShopList(userLocation.value);
   shopList.value = data.list;
+  console.log(shopList.value);
 }
 getShopList();
 
@@ -17,35 +23,34 @@ const typeList = ref([
   "玩",
   "乐"
 ])
-const map = getMap("shop");
 
 </script>
 
 <template>
 <view class="shop-list flex-left">
-  <view class="shop-item" v-for="item in shopList">
-    <view class="shop-poster-wrapper">
-      <image class="shop-poster" :src="item.poster"></image>
-    </view>
-    <view class="shop-content">
-      <view class="shop-name-wrapper">
-        <view class="shop-name">{{item.name}}</view>
-        <view :class="`type-tag type-tag-${item.type}`">{{typeList[item.type - 1]}}</view>
+    <view class="shop-item" v-for="item in shopList">
+      <view class="shop-poster-wrapper">
+        <image class="shop-poster" :src="item.poster"></image>
       </view>
-      <view class="shop-description">{{item.description}}</view>
-      <view class="tag-wrapper">
-        <view class="tag-item" v-for="tag in item.tags.slice(0, 2)">{{tag}}</view>
-      </view>
-      <view class="shop-footer">
-        <view>人均：{{item.average_cost ? '￥' + item.average_cost : '-'}}</view>
-        <view>评分：{{item.score || '-'}}</view>
-        <view class="distance-wrapper">
-          <view>距离：{{item.distance || '-'}}</view>
-          <view class="go-btn" @click="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
+      <view class="shop-content">
+        <view class="shop-name-wrapper">
+          <view class="shop-name">{{item.name}}</view>
+          <view :class="`type-tag type-tag-${item.type}`">{{typeList[item.type - 1]}}</view>
+        </view>
+        <view class="shop-description">{{item.description}}</view>
+        <view class="tag-wrapper">
+          <view class="tag-item" v-for="tag in item.tags.slice(0, 2)">{{tag}}</view>
+        </view>
+        <view class="shop-footer">
+          <view>人均：{{item.average_cost ? '￥' + item.average_cost : '-'}}</view>
+          <view>评分：{{item.score || '-'}}</view>
+          <view class="distance-wrapper">
+            <view>距离：{{item.distance || '-'}}</view>
+            <view class="go-btn" @click="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
+          </view>
         </view>
       </view>
     </view>
-  </view>
 </view>
 <map id="shop" scale={10} style="display: none;"></map>
 </template>
