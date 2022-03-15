@@ -1,8 +1,23 @@
 <script setup lang="ts">
-import Taro from "@tarojs/taro";
 import { ref } from "vue";
+import Taro from "@tarojs/taro";
+import ImageUploader from "@/components/image-uploader/index.vue";
 
-const formData = ref({
+type ShopInfo = {
+  name: string;
+  description: string;
+  type: number;
+  poster: string;
+  banners: string[];
+  tags: string[];
+  score: number;
+  evaluation: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
+
+const formData = ref<ShopInfo>({
   name: '',
   description: '',
   type: 0,
@@ -10,8 +25,17 @@ const formData = ref({
   banners: [],
   tags: [],
   score: 0,
-  evaluation: ''
+  evaluation: '',
+  address: '',
+  latitude: 0,
+  longitude: 0
 });
+const addShop = () => {
+  const data = formData.value;
+  data.tags = tagStr.value.split(',');
+  console.log(data);
+  console.log(banners.value);
+}
 
 const typeList = ref([
   "吃",
@@ -27,7 +51,6 @@ const confirmType = (res)=>{
   formData.value.type = index + 1;
 }
 
-const uploadUrl = ref('');
 const banners = ref([]);
 const tagStr = ref('');
 const positionType = ref('1')
@@ -61,7 +84,7 @@ const positionType = ref('1')
     </view>
     <view class="form-item-wrapper upload-wrapper">
       <view class="form-item-label">店铺图片</view>
-      <nut-uploader :url="uploadUrl" v-model:file-list="banners" maximum="10" multiple />
+      <ImageUploader v-model:value="formData.banners" maximum="9" multiple />
     </view>
     <nut-input placeholder="请输入店铺标签，用逗号隔开"
         v-model="tagStr"
@@ -92,7 +115,7 @@ const positionType = ref('1')
       <view class="form-item-label">
         店铺定位
       </view>
-      <view class="form-item-description">
+      <view class="form-item-description" @click="Taro.navigateTo({ url: '/pages/map/index' })">
         请选择店铺位置
       </view>
     </view>
@@ -111,7 +134,7 @@ const positionType = ref('1')
         />
     </view>
     <view class="btn-wrapper">
-      <nut-button block type="primary" @click="Taro.navigateTo({ url: '/pages/map/index' })">新增店铺</nut-button>
+      <nut-button block type="primary" @click="addShop">新增店铺</nut-button>
     </view>
   </view>
 </template>
@@ -154,6 +177,7 @@ const positionType = ref('1')
   }
   .upload-wrapper {
     align-items: flex-start;
+    flex-wrap: nowrap;
     .nut-uploader__upload {
       width: 80px;
       height: 80px;

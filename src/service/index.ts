@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
 
-const baseUrl = "http://localhost:3000";
+export const baseUrl = "http://localhost:3000";
 class Service {
   constructor() {}
 

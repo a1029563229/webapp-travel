@@ -1,8 +1,8 @@
 export default defineAppConfig({
   pages: [
     'pages/shop/modify',
-    'pages/map/index',
     'pages/index/index',
+    'pages/map/index',
   ],
   window: {
     backgroundTextStyle: 'light',
