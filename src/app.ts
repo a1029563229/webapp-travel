@@ -14,7 +14,8 @@ import {
   Rate,
   TextArea,
   Radio,
-  RadioGroup
+  RadioGroup,
+  SearchBar
 } from '@nutui/nutui-taro';
 import "@nutui/nutui-taro/dist/style.css";
 
@@ -40,5 +41,6 @@ App.use(Rate);
 App.use(TextArea);
 App.use(Radio);
 App.use(RadioGroup);
+App.use(SearchBar);
 
 export default App

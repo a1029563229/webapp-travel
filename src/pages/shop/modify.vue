@@ -3,6 +3,8 @@ import { ref } from "vue";
 import Taro from "@tarojs/taro";
 import ImageUploader from "@/components/image-uploader/index.vue";
 
+Taro.setNavigationBarTitle({ title: "添加新店铺" });
+
 type ShopInfo = {
   name: string;
   description: string;
