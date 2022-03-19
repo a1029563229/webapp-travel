@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia';
 import { 
   Button, 
   Toast, 
@@ -22,9 +23,13 @@ import "@nutui/nutui-taro/dist/style.css";
 import './app.less'
 import './assets/style/preset.less'
 import './assets/style/global.less'
+import { useUserStore } from './store';
 
 const App = createApp({
-  onShow (options) {},
+  onShow (options) {
+    const userStore = useUserStore();
+    userStore.setLocation();
+  }
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 })
 
@@ -42,5 +47,6 @@ App.use(TextArea);
 App.use(Radio);
 App.use(RadioGroup);
 App.use(SearchBar);
+App.use(createPinia());
 
 export default App

@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
+import { useUserStore } from "@/store";
 
-// 用户定位
-const map = getMap("shop");
-const location = await map.getLocation();
-const userLocation = ref<Location>({ longitude: location.longitude, latitude: location.latitude });
+const map = getMap('map');
+const user = useUserStore();
+const userLocation = ref<Location>({ longitude: user.longitude, latitude: user.latitude });
 
 // 店铺列表
 const shopList = ref();
@@ -52,7 +52,7 @@ const typeList = ref([
       </view>
     </view>
 </view>
-<map id="shop" scale={10} style="display: none;"></map>
+<map id="map" scale={10} style="display: none;"></map>
 </template>
 
 <style lang="less">

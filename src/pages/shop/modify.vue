@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Taro from "@tarojs/taro";
+import Taro, { useDidShow } from "@tarojs/taro";
 import ImageUploader from "@/components/image-uploader/index.vue";
+import { useGlobalStore } from "@/store";
+import { ApiAddShop } from "@/apis";
 
 Taro.setNavigationBarTitle({ title: "添加新店铺" });
 
@@ -32,11 +34,16 @@ const formData = ref<ShopInfo>({
   latitude: 0,
   longitude: 0
 });
-const addShop = () => {
+const addShop = async () => {
   const data = formData.value;
-  data.tags = tagStr.value.split(',');
+  data.tags = tagStr ? tagStr.value.split('，') : [];
+  data.poster = data.banners[0];
   console.log(data);
-  console.log(banners.value);
+  await ApiAddShop(data);
+  Taro.showToast({
+    title: "新增成功！"
+  });
+  Taro.navigateBack();
 }
 
 const typeList = ref([
@@ -53,9 +60,19 @@ const confirmType = (res)=>{
   formData.value.type = index + 1;
 }
 
-const banners = ref([]);
 const tagStr = ref('');
 const positionType = ref('1')
+
+useDidShow(() => {
+  const globalStore = useGlobalStore();
+  const shop = globalStore.shop;
+  if (shop) {
+    formData.value.address = shop.address;
+    formData.value.longitude = shop.longitude;
+    formData.value.latitude = shop.latitude;
+  }
+  console.log(shop);
+})
 </script>
 
 <template>
@@ -118,20 +135,20 @@ const positionType = ref('1')
         店铺定位
       </view>
       <view class="form-item-description" @click="Taro.navigateTo({ url: '/pages/map/index' })">
-        请选择店铺位置
+        {{ formData.address || '请选择店铺位置' }}
       </view>
     </view>
     <view v-if="positionType === '2'">
       <nut-input placeholder="请输入店铺地址"
-          v-model="formData.description"
+          v-model="formData.address"
           label="店铺地址"
         />
       <nut-input placeholder="请输入店铺经度"
-          v-model="formData.description"
+          v-model="formData.longitude"
           label="店铺经度"
         />
       <nut-input placeholder="请输入店铺纬度"
-          v-model="formData.description"
+          v-model="formData.latitude"
           label="店铺纬度"
         />
     </view>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps } from 'vue';
-import { getMap } from "@/utils/map";
+import { useUserStore } from "@/store";
 
 type WxMapLocation = {
   id: number | string;
@@ -18,18 +18,17 @@ defineProps<{
 }>()
 
 // 定位相关
-const map = getMap('map');
-const myLocation = await map.getLocation();
+const user = useUserStore();
 const myMarker = ref({
-  longitude: myLocation.longitude,
-  latitude: myLocation.latitude,
+  longitude: user.longitude,
+  latitude: user.latitude,
   id: -1,
   iconPath: "http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/weight/position.png",
   width: 40,
   height: 40
 });
-const innerLongitude = ref(myLocation.longitude);
-const innerLatitude = ref(myLocation.latitude);
+const innerLongitude = ref(user.longitude);
+const innerLatitude = ref(user.latitude);
 
 const onMarkerTap = e => {
   console.log('onMarkerTap');

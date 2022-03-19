@@ -3,11 +3,13 @@ import { ref } from 'vue';
 import Taro from "@tarojs/taro";
 import { ApiMapSearch } from "@/apis";
 import Mapper from "@/components/mapper/index.vue";
+import { useUserStore, useGlobalStore } from "@/store";
 
 Taro.setNavigationBarTitle({ title: '定位店铺' });
 
 // 搜索相关
-const keywords = ref('蚝满园');
+const user = useUserStore();
+const keywords = ref('');
 const markers = ref([]);
 const currentShopIndex = ref(0);
 const currentShop = ref<{
@@ -21,7 +23,12 @@ const currentShop = ref<{
   latitude: 0
 });
 const onSearch = async () => {
-  const data = await ApiMapSearch({ keywords: keywords.value, city: '深圳' });
+  const data = await ApiMapSearch({
+    longitude: user.longitude,
+    latitude: user.latitude,
+    keywords: keywords.value,
+    city: '深圳'
+  });
   if (data.length > 0) {
     markers.value = data.map(item => ({
       ...item,
@@ -31,7 +38,14 @@ const onSearch = async () => {
       width: 30,
       height: 30
     }));
+    currentShopIndex.value = 0;
     currentShop.value = data[0];
+  } else {
+    currentShopIndex.value = 0;
+    currentShop.value = {
+      longitude: 0,
+      latitude: 0
+    }
   }
 }
 
@@ -41,9 +55,10 @@ const prevOrNext = (addOrDesc: number) => {
   currentShop.value = markers.value[currentShopIndex.value];
 }
 
+const globalStore = useGlobalStore();
 const confirm = () => {
-  console.log('confirm');
-  console.log(currentShop.value);
+  globalStore.setShop(currentShop.value);
+  Taro.navigateBack();
 }
 </script>
 
@@ -69,7 +84,7 @@ const confirm = () => {
       <view class="btn-group">
         <nut-button class="btn-item" type="default" @click="prevOrNext(-1)" :disabled="currentShopIndex === 0">上一家</nut-button>
         <nut-button class="btn-item" type="default" @click="prevOrNext(1)" :disabled="currentShopIndex === markers.length - 1">下一家</nut-button>
-        <nut-button class="btn-item" type="primary" @click="confirm">确定</nut-button>
+        <nut-button class="btn-item btn-primary" type="primary" @click="confirm">确定</nut-button>
       </view>
     </view>
   </view>
@@ -113,6 +128,10 @@ const confirm = () => {
       .flex-between;
       .btn-item {
         width: 30%;
+      }
+      .nut-button--default {
+        border-color: @shanhuzhu;
+        color: @shanhuzhu;
       }
     }
   }
