@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Taro, { useDidShow } from "@tarojs/taro";
+import Taro, { getCurrentInstance, useDidShow } from "@tarojs/taro";
 import ImageUploader from "@/components/image-uploader/index.vue";
 import { useGlobalStore } from "@/store";
-import { ApiAddShop } from "@/apis";
+import { ApiAddShop, ApiGetShopDetail } from "@/apis";
 
 Taro.setNavigationBarTitle({ title: "添加新店铺" });
 
 type ShopInfo = {
+  id?: number;
   name: string;
   description: string;
   type: number;
@@ -73,6 +74,17 @@ useDidShow(() => {
   }
   console.log(shop);
 })
+
+const shopId = getCurrentInstance().router?.params.shopId || 28;
+const getShopDetail = async () => {
+  formData.value = await ApiGetShopDetail({ id: shopId });
+  typeName.value = typeList.value[formData.value.type - 1];
+  tagStr.value = formData.value.tags.join('，');
+}
+if (shopId) {
+  getShopDetail();
+}
+
 </script>
 
 <template>

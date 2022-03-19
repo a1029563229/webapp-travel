@@ -52,7 +52,7 @@ const typeList = ref([
       </view>
     </view>
 </view>
-<map id="map" scale={10} style="display: none;"></map>
+<map id="shop" scale={10} style="display: none;"></map>
 </template>
 
 <style lang="less">
