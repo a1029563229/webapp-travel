@@ -1,10 +1,22 @@
 <script setup lang="ts">
+import { defineProps } from "vue";
 import { baseUrl } from "@/service";
 import { ref, defineEmits } from "vue";
 
+const props = defineProps<{
+  value: string[]
+}>();
 const uploadUrl = ref(`${baseUrl}/common/upload`);
-const banners = ref<string[]>([]);
+const uploadedBanners = ref();
+uploadedBanners.value = props.value.map(item => ({
+  status: 'success',
+  url: item,
+  type: 'image'
+}));
+
 const emit = defineEmits(['update:value']);
+const banners = ref<string[]>(props.value || []);
+emit('update:value', banners.value);
 
 const onUploadSuccess = ({ data }) => {
   const res = JSON.parse(data.data);
@@ -22,5 +34,6 @@ const onDelete = ({ index }) => {
   <nut-uploader 
     :url="uploadUrl" 
     @success="onUploadSuccess"
-    @delete="onDelete" />
+    @delete="onDelete"
+    v-model:file-list="uploadedBanners" />
 </template>

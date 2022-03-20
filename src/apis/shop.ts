@@ -11,3 +11,7 @@ export const ApiGetShopDetail = (data?: any) => {
 export const ApiAddShop = (data: any) => {
   return service.post('/shop/add', data);
 }
+
+export const ApiUpdateShop = (data: any) => {
+  return service.post('/shop/update', data);
+}

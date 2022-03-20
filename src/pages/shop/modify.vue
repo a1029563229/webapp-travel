@@ -3,9 +3,8 @@ import { ref } from "vue";
 import Taro, { getCurrentInstance, useDidShow } from "@tarojs/taro";
 import ImageUploader from "@/components/image-uploader/index.vue";
 import { useGlobalStore } from "@/store";
-import { ApiAddShop, ApiGetShopDetail } from "@/apis";
+import { ApiAddShop, ApiUpdateShop, ApiGetShopDetail } from "@/apis";
 
-Taro.setNavigationBarTitle({ title: "添加新店铺" });
 
 type ShopInfo = {
   id?: number;
@@ -35,17 +34,6 @@ const formData = ref<ShopInfo>({
   latitude: 0,
   longitude: 0
 });
-const addShop = async () => {
-  const data = formData.value;
-  data.tags = tagStr ? tagStr.value.split('，') : [];
-  data.poster = data.banners[0];
-  console.log(data);
-  await ApiAddShop(data);
-  Taro.showToast({
-    title: "新增成功！"
-  });
-  Taro.navigateBack();
-}
 
 const typeList = ref([
   "吃",
@@ -76,27 +64,55 @@ useDidShow(() => {
 })
 
 const shopId = getCurrentInstance().router?.params.shopId || 28;
+Taro.setNavigationBarTitle({ title: shopId ? '修改店铺信息' : '添加新店铺' });
+const hasDetail = ref(false);
 const getShopDetail = async () => {
   formData.value = await ApiGetShopDetail({ id: shopId });
   typeName.value = typeList.value[formData.value.type - 1];
   tagStr.value = formData.value.tags.join('，');
+  hasDetail.value = true;
 }
 if (shopId) {
   getShopDetail();
 }
 
+
+const submit = async () => {
+  const data = formData.value;
+  data.tags = tagStr ? tagStr.value.split('，') : [];
+  data.poster = data.banners[0];
+  console.log(data);
+  if (shopId) {
+    updateShop(data);
+  } else {
+    addShop(data);
+  }
+}
+
+const addShop = async (data) => {
+  await ApiAddShop(data);
+  Taro.showToast({
+    title: "新增成功！"
+  });
+  Taro.navigateBack();
+}
+
+const updateShop = async (data) => {
+  await ApiUpdateShop({ ...data, id: shopId });
+  Taro.showToast({
+    title: "更新成功！"
+  });
+  Taro.navigateBack();
+}
+
 </script>
 
 <template>
-  <view class="shop-modify-container">
-    <view class="title">添加新店铺</view>
+  <view class="shop-modify-container" v-if="!shopId || hasDetail">
+    <view class="title">{{shopId ? '修改店铺信息' : '添加新店铺'}}</view>
     <nut-input placeholder="请输入店铺名称"
         v-model="formData.name"
         label="店铺名称"
-      />
-    <nut-input placeholder="请输入店铺描述"
-        v-model="formData.description"
-        label="店铺描述"
       />
     <view>
       <nut-input placeholder="请选择店铺类型"
@@ -131,7 +147,7 @@ if (shopId) {
       <view class="form-item-label">
         店铺测评
       </view>
-      <nut-textarea v-model="formData.evaluation" rows="3" autosize />
+      <nut-textarea v-model="formData.description" rows="3" autosize />
     </view>
     <view class="form-item-wrapper form-textarea-wrapper">
       <view class="form-item-label">
@@ -165,7 +181,7 @@ if (shopId) {
         />
     </view>
     <view class="btn-wrapper">
-      <nut-button block type="primary" @click="addShop">新增店铺</nut-button>
+      <nut-button block type="primary" @click="submit">提交</nut-button>
     </view>
   </view>
 </template>
