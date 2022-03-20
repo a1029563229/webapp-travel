@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { ApiGetShopDetail } from "@/apis";
+import { ApiGetShopDetail, ApiDeleteShop } from "@/apis";
 import { useUserStore } from "@/store";
 import { getMap } from "@/utils/map";
 
 const map = getMap('map');
 
-// const shopId = getCurrentInstance().router?.params.shopId || "";
-const shopId = getCurrentInstance().router?.params.shopId || 28;
+const shopId = getCurrentInstance().router?.params.id || "23";
+console.log({ shopId });
 
 const detail = ref();
 const getShopDetail = async () => {
@@ -16,6 +16,17 @@ const getShopDetail = async () => {
   detail.value = await ApiGetShopDetail({ id: shopId, longitude: user.longitude, latitude: user.latitude });
 }
 getShopDetail();
+
+const deleteShop = () => {
+  Taro.showModal({
+    title: "确定要删除该条信息吗？",
+    success: async () => {
+      await ApiDeleteShop({ id: shopId });
+      Taro.showToast({ title: "删除成功！" });
+      Taro.navigateBack();
+    }
+  });
+}
 
 const typeList = ref([
   "吃",
@@ -50,6 +61,9 @@ const typeList = ref([
           <view class="score-label">评分：</view>
           <nut-rate active-color="rgba(255, 177, 27)" v-model="detail.score" allow-half disabled />
         </view>
+        <view class="address-wrapper">
+          地址：{{detail.address}}
+        </view>
         <view class="distance-wrapper">
           <view>距离：{{detail.distance || '-'}}</view>
         </view>
@@ -60,6 +74,7 @@ const typeList = ref([
     </view>
     <view class="modify-wrapper">
       <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify?id=${shopId}` })">改</view>
+      <view class="modify-item" @click="deleteShop()">删</view>
     </view>
   </view>
   <map id="map" scale={10} style="display: none;"></map>
@@ -70,14 +85,15 @@ const typeList = ref([
 
 .shop-detail-container {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 50px;
   .swiper-img-item {
     width: 100vw;
   }
   .shop-content {
     box-sizing: border-box;
     padding: 0 10px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .shop-name-wrapper {
     .flex-left;
@@ -128,6 +144,10 @@ const typeList = ref([
         height: 15px;
       }
     }
+    .address-wrapper {
+      margin-top: 3px;
+      margin-bottom: 5px;
+    }
     .distance-wrapper {
       .flex-left;
     }
@@ -157,6 +177,7 @@ const typeList = ref([
     right: 10px;
     .modify-item {
       .flex-center;
+      margin-top: 10px;
       width: 40px;
       height: 40px;
       color: #fff;

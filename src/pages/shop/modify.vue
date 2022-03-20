@@ -63,7 +63,7 @@ useDidShow(() => {
   console.log(shop);
 })
 
-const shopId = getCurrentInstance().router?.params.shopId || 28;
+const shopId = getCurrentInstance().router?.params.id || '23';
 Taro.setNavigationBarTitle({ title: shopId ? '修改店铺信息' : '添加新店铺' });
 const hasDetail = ref(false);
 const getShopDetail = async () => {
@@ -217,6 +217,9 @@ const updateShop = async (data) => {
       textarea {
         height: 50px;
       }
+    }
+    .nut-uploader {
+      width: 360px;
     }
   }
   .form-textarea-wrapper {

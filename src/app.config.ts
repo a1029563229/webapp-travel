@@ -1,8 +1,8 @@
 export default defineAppConfig({
   pages: [
     'pages/shop/modify',
-    'pages/shop/detail',
     'pages/index/index',
+    'pages/shop/detail',
     'pages/map/index',
   ],
   window: {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Taro from '@tarojs/taro';
 import { ref } from "vue";
 import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
@@ -28,7 +29,7 @@ const typeList = ref([
 
 <template>
 <view class="shop-list flex-left">
-    <view class="shop-item" v-for="item in shopList">
+    <view class="shop-item" v-for="item in shopList" @click="Taro.navigateTo({ url: `/pages/shop/detail?id=${item.id}` })">
       <view class="shop-poster-wrapper">
         <image class="shop-poster" :src="item.poster"></image>
       </view>
@@ -46,10 +47,13 @@ const typeList = ref([
           <view>评分：{{item.score || '-'}}</view>
           <view class="distance-wrapper">
             <view>距离：{{item.distance || '-'}}</view>
-            <view class="go-btn" @click="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
+            <view class="go-btn" @click.stop="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
           </view>
         </view>
       </view>
+    </view>
+    <view class="modify-wrapper">
+      <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify` })">增</view>
     </view>
 </view>
 <map id="shop" scale={10} style="display: none;"></map>
@@ -137,5 +141,22 @@ const typeList = ref([
   .shop-item:nth-child(odd) {
     margin-right: 10px;
   }
+  .modify-wrapper {
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
+    .modify-item {
+      .flex-center;
+      margin-top: 10px;
+      width: 40px;
+      height: 40px;
+      color: #fff;
+      border-radius: 100%;
+      font-size: 16px;
+      background-color: @shanchui;
+    }
+  }
 }
+
+
 </style>
