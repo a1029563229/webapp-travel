@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import Taro, { getCurrentInstance, useShareAppMessage } from '@tarojs/taro';
 import { ApiGetShopDetail, ApiDeleteShop } from "@/apis";
 import { useUserStore } from "@/store";
 import { getMap } from "@/utils/map";
 
 const map = getMap('map');
 
+Taro.setNavigationBarTitle({ title: '店铺详情' });
 const shopId = getCurrentInstance().router?.params.id || "23";
 console.log({ shopId });
 
@@ -14,8 +15,14 @@ const detail = ref();
 const getShopDetail = async () => {
   const user = useUserStore();
   detail.value = await ApiGetShopDetail({ id: shopId, longitude: user.longitude, latitude: user.latitude });
+  Taro.setNavigationBarTitle({ title: detail.value.name });
 }
 getShopDetail();
+useShareAppMessage(() => ({
+  title: detail.value.name,
+  path: `/pages/shop/detail?id=${detail.value.id}`,
+  imageUrl: detail.value.poster
+}));
 
 const deleteShop = () => {
   Taro.showModal({

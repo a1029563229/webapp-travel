@@ -5,7 +5,6 @@ import ImageUploader from "@/components/image-uploader/index.vue";
 import { useGlobalStore } from "@/store";
 import { ApiAddShop, ApiUpdateShop, ApiGetShopDetail } from "@/apis";
 
-
 type ShopInfo = {
   id?: number;
   name: string;
@@ -14,6 +13,7 @@ type ShopInfo = {
   poster: string;
   banners: string[];
   tags: string[];
+  average_cost: number;
   score: number;
   evaluation: string;
   address: string;
@@ -34,6 +34,19 @@ const formData = ref<ShopInfo>({
   latitude: 0,
   longitude: 0
 });
+
+const shopId = getCurrentInstance().router?.params.id || '';
+Taro.setNavigationBarTitle({ title: shopId ? '修改店铺信息' : '添加新店铺' });
+const hasDetail = ref(false);
+const getShopDetail = async () => {
+  formData.value = await ApiGetShopDetail({ id: shopId });
+  typeName.value = typeList.value[formData.value.type - 1];
+  tagStr.value = formData.value.tags.join('，');
+  hasDetail.value = true;
+}
+if (shopId) {
+  getShopDetail();
+}
 
 const typeList = ref([
   "吃",
@@ -62,20 +75,6 @@ useDidShow(() => {
   }
   console.log(shop);
 })
-
-const shopId = getCurrentInstance().router?.params.id || '23';
-Taro.setNavigationBarTitle({ title: shopId ? '修改店铺信息' : '添加新店铺' });
-const hasDetail = ref(false);
-const getShopDetail = async () => {
-  formData.value = await ApiGetShopDetail({ id: shopId });
-  typeName.value = typeList.value[formData.value.type - 1];
-  tagStr.value = formData.value.tags.join('，');
-  hasDetail.value = true;
-}
-if (shopId) {
-  getShopDetail();
-}
-
 
 const submit = async () => {
   const data = formData.value;
@@ -136,6 +135,10 @@ const updateShop = async (data) => {
     <nut-input placeholder="请输入店铺标签，用逗号隔开"
         v-model="tagStr"
         label="店铺标签"
+      />
+    <nut-input placeholder="请输入人均消费"
+        v-model="formData.average_cost"
+        label="人均消费"
       />
     <view class="form-item-wrapper">
       <view class="form-item-label">
@@ -221,6 +224,9 @@ const updateShop = async (data) => {
     .nut-uploader {
       width: 360px;
     }
+  }
+  .nut-input-label {
+    width: 80px;
   }
   .form-textarea-wrapper {
     align-items: flex-start;
