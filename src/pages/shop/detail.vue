@@ -48,14 +48,14 @@ const userRole = computed(() => user.role);
 const heightList: any[] = [];
 const currentHeight = ref(0);
 const onLoadImg = (imgDetail) => {
-    const list = detail.value.banners || [];
-    const { width, height } = imgDetail;
-    const ratioHeight = (375 / width) * height;
-    heightList.push(ratioHeight);
-    if (heightList.length === list.length) {
-      currentHeight.value = Math.max.apply(null, heightList);
-    }
+  const list = detail.value.banners || [];
+  const { width, height } = imgDetail;
+  const ratioHeight = (375 / width) * height;
+  heightList.push(ratioHeight);
+  if (heightList.length === list.length) {
+    currentHeight.value = Math.max.apply(null, heightList);
   }
+}
 
 </script>
 <template>
