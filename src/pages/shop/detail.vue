@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Taro, { getCurrentInstance, useShareAppMessage } from '@tarojs/taro';
 import { ApiGetShopDetail, ApiDeleteShop } from "@/apis";
 import { useUserStore } from "@/store";
@@ -8,7 +8,7 @@ import { getMap } from "@/utils/map";
 const map = getMap('map');
 
 Taro.setNavigationBarTitle({ title: '店铺详情' });
-const shopId = getCurrentInstance().router?.params.id || "23";
+const shopId = getCurrentInstance().router?.params.id || "32";
 console.log({ shopId });
 
 const detail = ref();
@@ -41,6 +41,10 @@ const typeList = ref([
   "玩",
   "乐"
 ]);
+
+const user = useUserStore();
+const userRole = computed(() => user.role);
+
 </script>
 <template>
   <view class="shop-detail-container" v-if="detail">
@@ -79,7 +83,7 @@ const typeList = ref([
     <view class="btn-footer">
       <nut-button class="btn-go" block type="primary" @click="map.locateTo(detail.longitude, detail.latitude, detail.name)">到这儿去</nut-button>
     </view>
-    <view class="modify-wrapper">
+    <view class="modify-wrapper" v-if="userRole === 99">
       <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify?id=${shopId}` })">改</view>
       <view class="modify-item" @click="deleteShop()">删</view>
     </view>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Taro from '@tarojs/taro';
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
 import { useUserStore } from "@/store";
@@ -8,6 +8,7 @@ import { useUserStore } from "@/store";
 const map = getMap('map');
 const user = useUserStore();
 const userLocation = ref<Location>({ longitude: user.longitude, latitude: user.latitude });
+const userRole = computed(() => user.role);
 
 // 店铺列表
 const shopList = ref();
@@ -52,7 +53,7 @@ const typeList = ref([
         </view>
       </view>
     </view>
-    <view class="modify-wrapper">
+    <view class="modify-wrapper" v-if="userRole === 99">
       <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify` })">增</view>
     </view>
 </view>

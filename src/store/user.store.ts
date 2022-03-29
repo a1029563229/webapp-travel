@@ -8,7 +8,8 @@ const useUserStore = defineStore('user', {
       latitude: +(Taro.getStorageSync('latitude') || 0),
     },
     info: null,
-    token: Taro.getStorageSync('token') || ''
+    token: Taro.getStorageSync('token') || '',
+    role: 0
   }),
 
   getters: {
@@ -30,6 +31,10 @@ const useUserStore = defineStore('user', {
         ...(this.info || {}),
         ...info
       }
+    },
+
+    setRole(role: number) {
+      this.role = role;
     },
 
     setToken(token: string) {

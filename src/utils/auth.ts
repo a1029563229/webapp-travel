@@ -17,5 +17,5 @@ export const login = async () => {
 export const getUserInfo = async () => {
   const user = useUserStore();
   const userInfo = await ApiGetUserInfo({ token: user.token });
-  user.setInfo({ role: userInfo.role });
+  user.setRole(userInfo.role);
 }
