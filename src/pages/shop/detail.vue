@@ -45,6 +45,18 @@ const typeList = ref([
 const user = useUserStore();
 const userRole = computed(() => user.role);
 
+const heightList: any[] = [];
+const currentHeight = ref(0);
+const onLoadImg = (imgDetail) => {
+    const list = detail.value.banners || [];
+    const { width, height } = imgDetail;
+    const ratioHeight = (375 / width) * height;
+    heightList.push(ratioHeight);
+    if (heightList.length === list.length) {
+      currentHeight.value = Math.max.apply(null, heightList);
+    }
+  }
+
 </script>
 <template>
   <view class="shop-detail-container" v-if="detail">
@@ -52,9 +64,10 @@ const userRole = computed(() => user.role);
       :init-page="0" 
       :pagination-visible="true" 
       pagination-color="#426543" 
-      auto-play="3000">
+      auto-play="3000"
+      :style="currentHeight && `height:${currentHeight}px;`">
       <nut-swiper-item v-for="item in detail.banners">
-        <img class="swiper-img-item" :src="item" alt="" mode="widthFix" />
+        <image class="swiper-img-item" :src="item" alt="" mode="widthFix" @load="(e: any) => onLoadImg(e.detail)" />
       </nut-swiper-item>
     </nut-swiper>
     <view class="shop-content">
@@ -98,6 +111,9 @@ const userRole = computed(() => user.role);
   position: relative;
   min-height: 100vh;
   padding-bottom: 50px;
+  .swiper-img-item-wrapper {
+    height: fit-content!important;
+  }
   .swiper-img-item {
     width: 100vw;
   }
