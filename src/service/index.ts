@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 
-// export const baseUrl = "http://localhost:7788";
-export const baseUrl = "https://webapi-travel.jt-gmall.com";
+export const baseUrl = "http://localhost:7788";
+// export const baseUrl = "https://webapi-travel.jt-gmall.com";
 
 class Service {
   constructor() {}

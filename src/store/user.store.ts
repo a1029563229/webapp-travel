@@ -6,7 +6,9 @@ const useUserStore = defineStore('user', {
     location: {
       longitude: +(Taro.getStorageSync('longitude') || 0),
       latitude: +(Taro.getStorageSync('latitude') || 0),
-    }
+    },
+    info: null,
+    token: Taro.getStorageSync('token') || ''
   }),
 
   getters: {
@@ -21,6 +23,19 @@ const useUserStore = defineStore('user', {
       this.location.latitude = location.latitude;
       Taro.setStorageSync('longitude', location.longitude);
       Taro.setStorageSync('latitude', location.latitude);
+    },
+
+    setInfo(info: any) {
+      this.info = {
+        ...(this.info || {}),
+        ...info
+      }
+    },
+
+    setToken(token: string) {
+      console.log({ token });
+      this.token = token;
+      Taro.setStorageSync('token', token);
     }
   }
 });

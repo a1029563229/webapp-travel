@@ -24,9 +24,11 @@ import './app.less'
 import './assets/style/preset.less'
 import './assets/style/global.less'
 import { useUserStore } from './store';
+import { login } from './utils/auth';
 
 const App = createApp({
   onShow (options) {
+    login();
     const userStore = useUserStore();
     userStore.setLocation();
   }

@@ -1,4 +1,4 @@
-@shanchui: rgba(255, 177, 27);
+@shanchui: #ffb11b;
 @shanhuzhu: #F17C67;
 @gray: rgba(120, 120, 120, 1);
 
@@ -21,3 +21,16 @@
   align-items: center;
 }
 
+.text-ellipsis(@line:2) {
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: @line; /*这个数字是设置要显示省略号的行数*/
+
+  -webkit-box-orient: vertical;
+
+  word-break: break-all;
+}

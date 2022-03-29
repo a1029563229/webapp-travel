@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 const useGlobalStore = defineStore<
   string, {
-  shop: any
+  shop: any;
 }>('global', {
   state: () => ({
     shop: null
