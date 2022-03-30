@@ -7,6 +7,8 @@ import { useUserStore } from "@/store";
 
 const map = getMap('map');
 const user = useUserStore();
+await user.setLocation();
+
 const userLocation = ref<Location>({ longitude: user.longitude, latitude: user.latitude });
 const userRole = computed(() => user.role);
 

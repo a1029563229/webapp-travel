@@ -19,7 +19,7 @@ const getShopDetail = async () => {
 }
 getShopDetail();
 useShareAppMessage(() => ({
-  title: detail.value.name,
+  title: detail.value.name + (detail.value.tags[0] ? `（${detail.value.tags[0]}）` : ''),
   path: `/pages/shop/detail?id=${detail.value.id}`,
   imageUrl: detail.value.poster
 }));
@@ -50,7 +50,7 @@ const currentHeight = ref(0);
 const onLoadImg = (imgDetail) => {
   const list = detail.value.banners || [];
   const { width, height } = imgDetail;
-  const ratioHeight = (375 / width) * height;
+  const ratioHeight = (Taro.getSystemInfoSync().windowWidth / width) * height;
   heightList.push(ratioHeight);
   if (heightList.length === list.length) {
     currentHeight.value = Math.max.apply(null, heightList);
@@ -110,7 +110,6 @@ const onLoadImg = (imgDetail) => {
 .shop-detail-container {
   position: relative;
   min-height: 100vh;
-  padding-bottom: 50px;
   .swiper-img-item-wrapper {
     height: fit-content!important;
   }

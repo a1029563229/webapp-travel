@@ -1,18 +1,22 @@
 <script setup>
 import Taro from "@tarojs/taro";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useUserStore } from "@/store";
+import { updateUserInfo } from "@/utils/auth";
 
 const user = useUserStore();
-const userInfo = ref(user.info);
+const userInfo = computed(() => user.info);
 const login = async () => {
   const reply = await Taro.getUserProfile({ desc: '用于提供店铺收藏功能' });
   const info = {
+    ...reply.userInfo,
+    id: user.info.id,
     nickname: reply.userInfo.nickName,
-    avatar: reply.userInfo.avatarUrl
+    avatar: reply.userInfo.avatarUrl,
   }
   userInfo.value = info;
   user.setInfo(info);
+  updateUserInfo(info);
 }
 </script>
 
@@ -23,7 +27,7 @@ const login = async () => {
         className='card-img'
         src='https://jk-box.oss-cn-shanghai.aliyuncs.com/fb5343d6-b00f-4b3e-9b68-ac08a255a326/348a87abc5f0870ed4d0e6085fd032fb.png'
       />
-      <view className='user-info-wrapper' v-if="userInfo">
+      <view className='user-info-wrapper' v-if="userInfo && userInfo.nickname">
         <view className='avatar-wrapper'>
           <image className='avatar' :src="userInfo.avatar"></image>
         </view>

@@ -19,11 +19,16 @@ const useUserStore = defineStore('user', {
 
   actions: {
     async setLocation() {
-      const location = await Taro.getLocation({ type: "gcj02" });
-      this.location.longitude = location.longitude;
-      this.location.latitude = location.latitude;
-      Taro.setStorageSync('longitude', location.longitude);
-      Taro.setStorageSync('latitude', location.latitude);
+      try {
+        const location = await Taro.getLocation({ type: "gcj02" });
+        this.location.longitude = location.longitude;
+        this.location.latitude = location.latitude;
+        Taro.setStorageSync('longitude', location.longitude);
+        Taro.setStorageSync('latitude', location.latitude);
+      } catch(e) {
+        console.error(e);
+        return 0;
+      }
     },
 
     setInfo(info: any) {
