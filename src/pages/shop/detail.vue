@@ -5,7 +5,7 @@ import { ApiGetShopDetail, ApiDeleteShop } from "@/apis";
 import { useUserStore } from "@/store";
 import { getMap } from "@/utils/map";
 
-const map = getMap('map');
+const map = getMap('detailMap');
 
 Taro.setNavigationBarTitle({ title: '店铺详情' });
 const shopId = getCurrentInstance().router?.params.id || "32";
@@ -104,7 +104,7 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
       <view class="modify-item" @click="deleteShop()">删</view>
     </view>
   </view>
-  <map id="map" scale={10} style="display: none;"></map>
+  <map id="detailMap" scale={10} style="display: none;"></map>
 </template>
 
 <style lang="less">
