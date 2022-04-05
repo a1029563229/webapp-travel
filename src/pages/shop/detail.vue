@@ -9,7 +9,6 @@ const map = getMap('map');
 
 Taro.setNavigationBarTitle({ title: '店铺详情' });
 const shopId = getCurrentInstance().router?.params.id || "32";
-console.log({ shopId });
 
 const detail = ref();
 const getShopDetail = async () => {
@@ -57,6 +56,10 @@ const onLoadImg = (imgDetail) => {
   }
 }
 
+const locationTo = (longitude: number, latitude: number, name: string) => {
+  map.locateTo(longitude, latitude, name);
+}
+
 </script>
 <template>
   <view class="shop-detail-container" v-if="detail">
@@ -94,7 +97,7 @@ const onLoadImg = (imgDetail) => {
       </view>
     </view>
     <view class="btn-footer">
-      <nut-button class="btn-go" block type="primary" @click="map.locateTo(detail.longitude, detail.latitude, detail.name)">到这儿去</nut-button>
+      <nut-button class="btn-go" block type="primary" @click="locationTo(detail.longitude, detail.latitude, detail.name)">到这儿去</nut-button>
     </view>
     <view class="modify-wrapper" v-if="userRole === 99">
       <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify?id=${shopId}` })">改</view>

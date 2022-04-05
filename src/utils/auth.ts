@@ -7,6 +7,11 @@ export type UserInfo = {
   avatar: string;
 }
 
+export const logout = () => {
+  const user = useUserStore();
+  user.clearToken();
+}
+
 export const login = async () => {
   const user = useUserStore();
   if (user.token) {
@@ -22,7 +27,7 @@ export const login = async () => {
 
 export const getUserInfo = async () => {
   const user = useUserStore();
-  const userInfo = await ApiGetUserInfo({ token: user.token });
+  const userInfo = await ApiGetUserInfo();
   user.setRole(userInfo.role);
   user.setInfo(userInfo);
 }

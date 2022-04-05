@@ -21,7 +21,7 @@ const getMap = (mapName: string) => {
   
   return {
     locateTo,
-    getLocation
+    getLocation,
   }
 }
 

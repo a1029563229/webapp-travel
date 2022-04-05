@@ -5,7 +5,7 @@ import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
 import { useUserStore } from "@/store";
 
-const map = getMap('map');
+const map = getMap('shop');
 const user = useUserStore();
 await user.setLocation();
 
@@ -28,6 +28,10 @@ const typeList = ref([
   "乐"
 ])
 
+const locationTo = (longitude: number, latitude: number, name: string) => {
+  map.locateTo(longitude, latitude, name);
+}
+
 </script>
 
 <template>
@@ -48,9 +52,9 @@ const typeList = ref([
         <view class="shop-footer">
           <view>人均：{{item.average_cost ? '￥' + item.average_cost : '-'}}</view>
           <view>评分：{{item.score || '-'}}</view>
-          <view class="distance-wrapper">
+          <view class="distance-wrapper" @click.stop="locationTo(item.longitude, item.latitude, item.name)">
             <view>距离：{{item.distance || '-'}}</view>
-            <view class="go-btn" @click.stop="map.locateTo(item.longitude, item.latitude, item.name)">Go</view>
+            <view class="go-btn">Go</view>
           </view>
         </view>
       </view>
@@ -59,7 +63,7 @@ const typeList = ref([
       <view class="modify-item" @click="Taro.navigateTo({ url: `/pages/shop/modify` })">增</view>
     </view>
 </view>
-<map id="shop" scale={10} style="display: none;"></map>
+<map id="shop" scale={10} style="display: none;" />
 </template>
 
 <style lang="less">

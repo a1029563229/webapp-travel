@@ -34,4 +34,12 @@ export default defineAppConfig({
       desc: "请点击确定"
     }
   },
+  subPackages: [
+    {
+      root: "pages/subA/",
+      pages: [
+        "back/index"
+      ]
+    }
+  ]
 })

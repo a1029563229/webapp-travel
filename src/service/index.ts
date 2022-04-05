@@ -1,8 +1,10 @@
+import { login, logout } from "@/utils/auth";
 import Taro from "@tarojs/taro";
 
-// export const baseUrl = "http://localhost:7788";
-export const baseUrl = "https://webapi-travel.jt-gmall.com";
+export const baseUrl = "http://localhost:7788";
+// export const baseUrl = "https://webapi-travel.jt-gmall.com";
 
+let retryLoginTimes = 0;
 class Service {
   constructor() {}
 
@@ -14,6 +16,7 @@ class Service {
   ): Promise<any> {
     const header = {
       "content-type": "application/json",
+      token: Taro.getStorageSync('token') || '',
       ...otherHeaders
     };
     const _baseUrl = url.indexOf('http') === 0 ? '' : baseUrl
@@ -24,9 +27,15 @@ class Service {
       data,
       header
     });
+
+    if ((reply.statusCode === 403 || reply.data.code === 403) && retryLoginTimes < 5) {
+      retryLoginTimes++;
+      logout();
+      login();
+    }
     
     if (reply.data.code !== 1) throw new Error(reply.data.message);
-    
+
     return reply.data.data;
   }
 

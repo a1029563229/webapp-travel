@@ -46,6 +46,11 @@ const useUserStore = defineStore('user', {
       console.log({ token });
       this.token = token;
       Taro.setStorageSync('token', token);
+    },
+
+    clearToken() {
+      this.token = '';
+      Taro.removeStorageSync('token');
     }
   }
 });
