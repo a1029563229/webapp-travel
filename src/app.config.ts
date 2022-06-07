@@ -1,9 +1,10 @@
 export default defineAppConfig({
   pages: [
     'pages/index/index',
+    'pages/shop/modify',
+    'pages/map/city/list',
     'pages/shop/detail',
     'pages/personal/index',
-    'pages/shop/modify',
     'pages/map/index',
   ],
   tabBar: {

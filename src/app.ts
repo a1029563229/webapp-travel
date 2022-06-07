@@ -16,7 +16,8 @@ import {
   TextArea,
   Radio,
   RadioGroup,
-  SearchBar
+  SearchBar,
+  OverLay
 } from '@nutui/nutui-taro';
 import "@nutui/nutui-taro/dist/style.css";
 
@@ -38,6 +39,7 @@ App.use(Input);
 App.use(Icon);
 App.use(Picker);
 App.use(Popup);
+App.use(OverLay);
 App.use(Cell);
 App.use(Uploader);
 App.use(Progress);

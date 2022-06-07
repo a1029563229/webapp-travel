@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { computed, ref } from "vue";
 import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
@@ -19,7 +19,7 @@ const getShopList = async () => {
   shopList.value = data.list;
   console.log(shopList.value);
 }
-getShopList();
+useDidShow(() => getShopList());
 
 const typeList = ref([
   "吃",

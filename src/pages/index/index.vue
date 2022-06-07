@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import ShopList from '@/components/shop-list/index.vue';
-
-const banners = ref();
-banners.value = [
-  "https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg",
-  "https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg",
-  "https://storage.360buyimg.com/jdc-article/welcomenutui.jpg",
-  "https://storage.360buyimg.com/jdc-article/fristfabu.jpg"
-]
+import CityNav from "@/components/city-nav/index.vue";
 </script>
 
 <template>
   <view class="home-container container">
+    <city-nav />
     <image class="home-image" src="http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/common3/Xnip2022-03-13_11-58-14.jpg"></image>
     <view>
       <view class="sub-title">吃喝玩乐</view>
