@@ -32,8 +32,9 @@ const onSearch = async () => {
     city: globalStore.city
   });
   if (data.length > 0) {
-    markers.value = data.map(item => ({
+    markers.value = data.map((item, index) => ({
       ...item,
+      id: index,
       longitude: item.longitude,
       latitude: item.latitude,
       iconPath: "https://jk-box.oss-cn-shanghai.aliyuncs.com/84dddf44-f177-4e85-81f6-8c621e636fd8/6b12fbb21970f3694d4731ca4e00c592.png",
@@ -49,10 +50,16 @@ const onSearch = async () => {
       latitude: 0
     }
   }
+  console.log(markers.value);
 }
 
 const prevOrNext = (addOrDesc: number) => {
   const index = currentShopIndex.value + addOrDesc;
+  currentShopIndex.value = index;
+  currentShop.value = markers.value[currentShopIndex.value];
+}
+
+const switchPos = (index: number) => {
   currentShopIndex.value = index;
   currentShop.value = markers.value[currentShopIndex.value];
 }
@@ -75,7 +82,8 @@ const confirm = () => {
         <Mapper 
           :markers="markers" 
           :longitude="currentShop.longitude" 
-          :latitude="currentShop.latitude" />
+          :latitude="currentShop.latitude"
+          @switchPos="switchPos" />
       </template>
     </suspense>
     <view class="shop-card" v-if="currentShop.name">

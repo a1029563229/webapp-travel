@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
 import { useUserStore } from "@/store";
 
 type WxMapLocation = {
@@ -11,7 +11,7 @@ type WxMapLocation = {
   height?: number;
 }
 
-defineProps<{
+const props = defineProps<{
   markers: WxMapLocation[],
   longitude?: number,
   latitude?: number
@@ -30,9 +30,10 @@ const myMarker = ref({
 const innerLongitude = ref(user.longitude);
 const innerLatitude = ref(user.latitude);
 
+const emit = defineEmits(['switchPos']);
 const onMarkerTap = e => {
-  console.log('onMarkerTap');
-  console.log(e);
+  const index = e.detail.markerId;
+  emit('switchPos', index);
 }
 </script>
 
@@ -43,5 +44,5 @@ const onMarkerTap = e => {
     :longitude="longitude || innerLongitude" 
     :latitude="latitude || innerLatitude" 
     :markers="[myMarker, ...(markers || [])]" 
-    @markerTap="onMarkerTap" />
+    @markertap="onMarkerTap" />
 </template>

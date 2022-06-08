@@ -1,11 +1,10 @@
 export default defineAppConfig({
   pages: [
+    'pages/map/index',
     'pages/index/index',
     'pages/shop/modify',
-    'pages/map/city/list',
     'pages/shop/detail',
     'pages/personal/index',
-    'pages/map/index',
   ],
   tabBar: {
     selectedColor: '#ffb11b',
