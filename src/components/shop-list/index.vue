@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Taro, { useDidShow } from '@tarojs/taro';
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { getMap, Location } from "@/utils/map";
 import { ApiGetShopList } from "@/apis";
-import { useUserStore } from "@/store";
+import { useUserStore, useGlobalStore } from "@/store";
 
 const map = getMap('shop');
 const user = useUserStore();
@@ -14,12 +14,23 @@ const userRole = computed(() => user.role);
 
 // 店铺列表
 const shopList = ref();
+const global = useGlobalStore();
 const getShopList = async () => {
-  const data = await ApiGetShopList(userLocation.value);
+  const data = await ApiGetShopList({
+    ...userLocation.value,
+    city: global.city,
+    pageIndex: 1,
+    pageSize: 999
+  });
   shopList.value = data.list;
   console.log(shopList.value);
 }
+getShopList();
 useDidShow(() => getShopList());
+watchEffect(() => {
+  console.log(global.city);
+  getShopList();
+})
 
 const typeList = ref([
   "吃",

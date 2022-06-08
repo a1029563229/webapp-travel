@@ -22,12 +22,14 @@ const currentShop = ref<{
   longitude: 0,
   latitude: 0
 });
+
+const globalStore = useGlobalStore();
 const onSearch = async () => {
   const data = await ApiMapSearch({
     longitude: user.longitude,
     latitude: user.latitude,
     keywords: keywords.value,
-    city: '深圳'
+    city: globalStore.city
   });
   if (data.length > 0) {
     markers.value = data.map(item => ({
@@ -55,7 +57,6 @@ const prevOrNext = (addOrDesc: number) => {
   currentShop.value = markers.value[currentShopIndex.value];
 }
 
-const globalStore = useGlobalStore();
 const confirm = () => {
   globalStore.setShop(currentShop.value);
   Taro.navigateBack();

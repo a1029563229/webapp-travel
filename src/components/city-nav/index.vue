@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Taro from "@tarojs/taro";
 import { ref, onMounted } from "vue";
-
+import { useGlobalStore } from "@/store";
+import { ApiGetCityList } from "@/apis";
 
 const rect = ref<any>({});
 const computeRect = async () => {
@@ -49,25 +50,39 @@ const computeRect = async () => {
 onMounted(() => computeRect());
 
 const layerVisible = ref(false);
-const columns = ref([
+const cityList = ref([
   '深圳',
   '成都'
 ]);
-const city = ref('深圳');
-console.log(columns)
+const setCityList = async () => {
+  const reply = await ApiGetCityList();
+  cityList.value = reply.map(item => item.value);
+}
+setCityList();
+
+const g = useGlobalStore();
+const city = ref(g.city);
+const cityIndex = ref(cityList.value.findIndex(item => item === g.city));
+const selectCity = v => {
+  if (v === city.value) return;
+  city.value = v;
+  cityIndex.value = cityList.value.findIndex(item => item === v);
+  g.setCity(v);
+}
 </script>
 
 <template>
-  <div :style="`padding-top: ${rect.top}px;`">
-    <div class="area-location" @click="() => { layerVisible = true;}">深圳</div>
+  <view :style="`padding-top: ${rect.top}px;`">
+    <view class="area-location" @click="() => { layerVisible = true;}">{{city}}</view>
     <nut-picker
-      v-model="city"
+      :defaultIndex="cityIndex"
       v-model:visible="layerVisible"
-      :list-data="columns"
+      :list-data="cityList"
+      @confirm="selectCity"
       title="城市选择"
     >
     </nut-picker>
-  </div>
+  </view>
 </template>
 
 <style lang="less">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import Taro, { getCurrentInstance, useShareAppMessage } from '@tarojs/taro';
+import Taro, { getCurrentInstance, useShareAppMessage, useDidShow } from '@tarojs/taro';
 import { ApiGetShopDetail, ApiDeleteShop } from "@/apis";
 import { useUserStore } from "@/store";
 import { getMap } from "@/utils/map";
@@ -17,6 +17,7 @@ const getShopDetail = async () => {
   Taro.setNavigationBarTitle({ title: detail.value.name });
 }
 getShopDetail();
+useDidShow(() => getShopDetail());
 useShareAppMessage(() => ({
   title: detail.value.name + (detail.value.tags[0] ? `（${detail.value.tags[0]}）` : ''),
   path: `/pages/shop/detail?id=${detail.value.id}`,
@@ -204,6 +205,7 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
     position: fixed;
     bottom: 50px;
     right: 10px;
+    z-index: 10;
     .modify-item {
       .flex-center;
       margin-top: 10px;

@@ -6,20 +6,26 @@ import CityNav from "@/components/city-nav/index.vue";
 <template>
   <view class="home-container container">
     <city-nav />
-    <image class="home-image" src="http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/common3/Xnip2022-03-13_11-58-14.jpg"></image>
-    <view>
-      <view class="sub-title">吃喝玩乐</view>
-        <suspense>
-          <template #default>
-            <shop-list />
-          </template>
-        </suspense>
+    <view class="main-content">
+      <image class="home-image" src="http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/common3/Xnip2022-03-13_11-58-14.jpg"></image>
+      <view>
+        <view class="sub-title">吃喝玩乐</view>
+          <suspense>
+            <template #default>
+              <shop-list />
+            </template>
+          </suspense>
+      </view>
     </view>
   </view>
 </template>
 
 <style lang="less">
 .home-container {
+  .main-content {
+    max-height: 95vh;
+    overflow-y: scroll;
+  }
   .home-image {
     width: 100vw;
   }
