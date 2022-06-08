@@ -1,7 +1,7 @@
 export default defineAppConfig({
   pages: [
-    'pages/map/index',
     'pages/index/index',
+    'pages/map/index',
     'pages/shop/modify',
     'pages/shop/detail',
     'pages/personal/index',

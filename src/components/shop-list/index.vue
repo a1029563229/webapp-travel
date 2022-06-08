@@ -37,12 +37,13 @@ const getShopList = async () => {
     pageSize: 999
   });
   shopList.value = data.list;
-  console.log(shopList.value);
 }
 getShopList();
-useDidShow(() => getShopList());
+useDidShow(async () => {
+  await user.setLocation();
+  getShopList()
+});
 watchEffect(() => {
-  console.log(global.city);
   getShopList();
 })
 
@@ -75,7 +76,10 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
       </view>
       <view class="shop-footer">
         <view>人均：{{item.average_cost ? '￥' + item.average_cost : '-'}}</view>
-        <view>评分：{{item.score || '-'}}</view>
+        <view class="flex-left">
+          <view>评分：</view>
+          <view :class="`${item.score > 3.5 && 'high-score'}`">{{item.score || '-'}}</view>
+        </view>
         <view class="distance-wrapper" @click.stop="locationTo(item.longitude, item.latitude, item.name)">
           <view>距离：{{item.distance || '-'}}</view>
           <view class="go-btn">Go</view>
@@ -180,6 +184,10 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
         padding: 2px 5px;
         border-radius: 20px;
         display: inline-block;
+      }
+      .high-score {
+        color: @shanhuzhu;
+        font-weight: bold;
       }
     }
   }
