@@ -9,7 +9,6 @@ import CityNav from "@/components/city-nav/index.vue";
     <view class="main-content">
       <image class="home-image" src="http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/images/assets/common3/Xnip2022-03-13_11-58-14.jpg"></image>
       <view>
-        <view class="sub-title">吃喝玩乐</view>
           <suspense>
             <template #default>
               <shop-list />

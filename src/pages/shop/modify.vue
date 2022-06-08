@@ -31,6 +31,7 @@ const formData = ref<ShopInfo>({
   score: 0,
   evaluation: '',
   address: '',
+  average_cost: 0,
   latitude: 0,
   longitude: 0
 });
