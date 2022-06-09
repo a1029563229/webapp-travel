@@ -51,22 +51,24 @@ onMounted(() => computeRect());
 
 const layerVisible = ref(false);
 const cityList = ref([
-  '深圳',
-  '成都'
+  { text: '深圳', value: '深圳' },
+  { text: '成都', value: '成都' },
 ]);
 const setCityList = async () => {
   const reply = await ApiGetCityList();
-  cityList.value = reply.map(item => item.value);
+  cityList.value = reply.map(item => ({ text: item.value, value: item.value }));
 }
 setCityList();
 
 const g = useGlobalStore();
 const city = ref(g.city);
-const cityIndex = ref(cityList.value.findIndex(item => item === g.city));
-const selectCity = v => {
+const cityIndex = ref(cityList.value.findIndex(item => item.value === g.city));
+const selectCity = e => {
+  const v = e.selectedValue[0];
   if (v === city.value) return;
+  
   city.value = v;
-  cityIndex.value = cityList.value.findIndex(item => item === v);
+  cityIndex.value = cityList.value.findIndex(item => item.value === v);
   g.setCity(v);
 }
 </script>
@@ -77,7 +79,7 @@ const selectCity = v => {
     <nut-picker
       :defaultIndex="cityIndex"
       v-model:visible="layerVisible"
-      :list-data="cityList"
+      :columns="cityList"
       @confirm="selectCity"
       title="城市选择"
     >

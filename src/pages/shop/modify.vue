@@ -50,16 +50,17 @@ if (shopId) {
 }
 
 const typeList = ref([
-  "吃",
-  "喝",
-  "玩",
-  "乐"
+  { text: "吃", value: "吃" },
+  { text: "喝", value: "喝" },
+  { text: "玩", value: "玩" },
+  { text: "乐", value: "乐" },
 ])
 const typeName = ref('');
 const typePickerVisible = ref(false);
-const confirmType = (res)=>{
-  typeName.value = res;
-  const index = typeList.value.findIndex(type => type === res);
+const confirmType = (e)=>{
+  const v = e.selectedValue[0];
+  typeName.value = v;
+  const index = typeList.value.findIndex(type => type.value === v);
   formData.value.type = index + 1;
 }
 
@@ -123,7 +124,7 @@ const updateShop = async (data) => {
       />
       <nut-picker
         v-model:visible="typePickerVisible"
-        :list-data="typeList"
+        :columns="typeList"
         title="选择店铺类型"
         @confirm="confirmType" 
         :defaultIndex="0"

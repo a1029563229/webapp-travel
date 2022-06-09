@@ -60,10 +60,10 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
     v-for="(item, index) in typeList"
     @click="selectType(index)">{{item}}</view>
 </view>
-<view class="shop-list flex-left">
+<view class="shop-list">
   <view class="shop-item" v-for="item in shopList" @click="Taro.navigateTo({ url: `/pages/shop/detail?id=${item.id}` })">
     <view class="shop-poster-wrapper">
-      <image class="shop-poster" :src="item.poster"></image>
+      <image class="shop-poster" :src="item.poster" mode="widthFix"></image>
     </view>
     <view class="shop-content">
       <view class="shop-name-wrapper">
@@ -112,9 +112,9 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
   }
 }
 .shop-list {
-  padding-left: 10px;
+  padding-left: 11px;
   .shop-item {
-    width: 175px;
+    width: 350px;
     box-shadow: 0px 2px 3px 1px #f5f5f5;
     border-radius: 3px;
     overflow: hidden;
@@ -123,8 +123,6 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
     padding-bottom: 10px;
     margin-bottom: 15px;
     .shop-poster-wrapper {
-      max-height: 250px;
-      overflow: hidden;
       .shop-poster {
         width: 100%;
         height: 140px;
@@ -147,9 +145,6 @@ const locationTo = (longitude: number, latitude: number, name: string) => {
         font-size: 12px;
         .flex-center;
         background-color: @shanchui;
-      }
-      .type-tag-1 {
-        // background-color: rgba(255, 177, 27);
       }
     }
     .shop-description {
