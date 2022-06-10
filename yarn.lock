@@ -1299,10 +1299,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@nutui/nutui-taro@3.1.21":
-  version "3.1.21"
-  resolved "https://registry.npmmirror.com/@nutui/nutui-taro/-/nutui-taro-3.1.21.tgz#15eff99356144492330706b77b212bffdbad3df4"
-  integrity sha512-rwAPfYkXBzeW0RLDhJS8/CHofu/9YtlPW4UCHM4jy0FfXoiQsN2xCsIql9BWKnkoHGtt/QmxvxNn7qUzT3uyJA==
+"@nutui/nutui-taro@3.1.22-beta.0":
+  version "3.1.22-beta.0"
+  resolved "https://registry.npmmirror.com/@nutui/nutui-taro/-/nutui-taro-3.1.22-beta.0.tgz#4229f87fcd730303795072dd85ba32d83add19f6"
+  integrity sha512-0j/jqu1+4UahC9i2ZJVkQAIB/gxZMIr00uvuhxxlZNlH9DnddqatRIlHbnSrXRDUMAfWR1ydWIWK1vt549l3Bg==
   dependencies:
     sass "^1.50.0"
     vscode "^1.1.37"

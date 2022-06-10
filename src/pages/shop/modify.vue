@@ -41,7 +41,7 @@ Taro.setNavigationBarTitle({ title: shopId ? '修改店铺信息' : '添加新�
 const hasDetail = ref(false);
 const getShopDetail = async () => {
   formData.value = await ApiGetShopDetail({ id: shopId });
-  typeName.value = typeList.value[formData.value.type - 1];
+  typeName.value = typeList.value.find(item => item.value === formData.value.type)?.text;
   tagStr.value = formData.value.tags.join('，');
   hasDetail.value = true;
 }
@@ -50,18 +50,17 @@ if (shopId) {
 }
 
 const typeList = ref([
-  { text: "吃", value: "吃" },
-  { text: "喝", value: "喝" },
-  { text: "玩", value: "玩" },
-  { text: "乐", value: "乐" },
+  { text: "吃", value: 1 },
+  { text: "喝", value: 2 },
+  { text: "玩", value: 3 },
+  { text: "乐", value: 4 },
 ])
 const typeName = ref('');
 const typePickerVisible = ref(false);
 const confirmType = (e)=>{
-  const v = e.selectedValue[0];
-  typeName.value = v;
-  const index = typeList.value.findIndex(type => type.value === v);
-  formData.value.type = index + 1;
+  const v = e.selectedOptions[0];
+  typeName.value = v.text;
+  formData.value.type = v.value;
 }
 
 const tagStr = ref('');
@@ -152,7 +151,7 @@ const updateShop = async (data) => {
       <view class="form-item-label">
         店铺测评
       </view>
-      <nut-textarea v-model="formData.description" rows="3" autosize />
+      <nut-textarea v-model="formData.description" rows="3" />
     </view>
     <view class="form-item-wrapper form-textarea-wrapper">
       <view class="form-item-label">
