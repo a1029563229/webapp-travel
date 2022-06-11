@@ -17,7 +17,8 @@ const typeList = ref([
   "吃",
   "喝",
   "玩",
-  "乐"
+  "乐",
+  "住"
 ])
 const activeType = ref(0);
 const selectType = (type: number) => {

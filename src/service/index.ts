@@ -21,22 +21,27 @@ class Service {
     };
     const _baseUrl = url.indexOf('http') === 0 ? '' : baseUrl
 
-    const reply = await Taro.request({
-      method,
-      url: `${_baseUrl}${url}`,
-      data,
-      header
-    });
-
-    if ((reply.statusCode === 403 || reply.data.code === 403) && retryLoginTimes < 5) {
-      retryLoginTimes++;
-      logout();
-      login();
+    try {
+      const reply = await Taro.request({
+        method,
+        url: `${_baseUrl}${url}`,
+        data,
+        header
+      });
+  
+      if ((reply.statusCode === 403 || reply.data.code === 403) && retryLoginTimes < 5) {
+        retryLoginTimes++;
+        logout();
+        login();
+      }
+      
+      if (reply.data.code !== 1) throw new Error(reply.data.message);
+  
+      return reply.data.data;
+    } catch(e) {
+      console.error(e);
+      return Promise.reject(e);
     }
-    
-    if (reply.data.code !== 1) throw new Error(reply.data.message);
-
-    return reply.data.data;
   }
 
   get(url, data?) {

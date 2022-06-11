@@ -39,7 +39,8 @@ const typeList = ref([
   "吃",
   "喝",
   "玩",
-  "乐"
+  "乐",
+  "住"
 ]);
 
 const user = useUserStore();

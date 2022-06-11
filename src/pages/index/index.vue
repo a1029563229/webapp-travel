@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import Taro from "@tarojs/taro";
+import Taro, { useShareAppMessage } from "@tarojs/taro";
 import { ref, onMounted } from "vue";
 import ShopList from '@/components/shop-list/index.vue';
 import CityNav from "@/components/city-nav/index.vue";
+
+useShareAppMessage(() => ({
+  title: '晒兜斯的吃喝玩乐攻略',
+  path: '/pages/index/index',
+  imageUrl: 'http://shadows-mall.oss-cn-shenzhen.aliyuncs.com/426f84d0c58ce047b3934375ff8bc5ca8d5e8b9f562ba239e401e81e233ce2ef.jpg'
+}))
 
 const rect = ref<any>({});
 const computeRect = async () => {

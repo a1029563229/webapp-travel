@@ -1,3 +1,4 @@
+import Taro from "@tarojs/taro";
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
 import { 
@@ -28,6 +29,13 @@ import { login } from './utils/auth';
 
 const App = createApp({
   onShow (options) {
+    // Taro.onUnhandledRejection(({ reason }) => {
+    //   console.log('unhandledrejection')
+    //   Taro.showToast({
+    //     title: reason.toString(),
+    //     icon: "none"
+    //   })
+    // })
     login();
   }
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖

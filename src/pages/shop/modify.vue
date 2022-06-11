@@ -8,6 +8,7 @@ import { ApiAddShop, ApiUpdateShop, ApiGetShopDetail } from "@/apis";
 type ShopInfo = {
   id?: number;
   name: string;
+  city: string;
   description: string;
   type: number;
   poster: string;
@@ -23,6 +24,7 @@ type ShopInfo = {
 
 const formData = ref<ShopInfo>({
   name: '',
+  city: '',
   description: '',
   type: 0,
   poster: '',
@@ -54,6 +56,7 @@ const typeList = ref([
   { text: "喝", value: 2 },
   { text: "玩", value: 3 },
   { text: "乐", value: 4 },
+  { text: "住", value: 5 },
 ])
 const typeName = ref('');
 const typePickerVisible = ref(false);
@@ -66,21 +69,22 @@ const confirmType = (e)=>{
 const tagStr = ref('');
 const positionType = ref('1')
 
+const globalStore = useGlobalStore();
+// 选择完店铺定位后，回填地址
 useDidShow(() => {
-  const globalStore = useGlobalStore();
   const shop = globalStore.shop;
   if (shop) {
     formData.value.address = shop.address;
     formData.value.longitude = shop.longitude;
     formData.value.latitude = shop.latitude;
   }
-  console.log(shop);
 })
 
 const submit = async () => {
   const data = formData.value;
   data.tags = tagStr ? tagStr.value.split('，') : [];
   data.poster = data.banners[0];
+  data.city = globalStore.city;
   console.log(data);
   if (shopId) {
     updateShop(data);
